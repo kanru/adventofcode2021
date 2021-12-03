@@ -3,7 +3,7 @@ mod submarine;
 
 use sonar::Sonar;
 use std::io;
-use submarine::Submarine;
+use submarine::{diagnostic::DiagnosticModule, Submarine};
 
 fn main() -> io::Result<()> {
     let input = "data/day01.txt";
@@ -19,5 +19,10 @@ fn main() -> io::Result<()> {
     submarine_v2.run(&inst);
     println!("Day 2, part 1 => {}", submarine_v1.report());
     println!("Day 2, part 2 => {}", submarine_v2.report());
+
+    let input = "data/day03.txt";
+    let diagnostic_module = DiagnosticModule::from_file(&input)?;
+    println!("Day 3, part 1 => {:?}", diagnostic_module.generate_report());
+
     Ok(())
 }

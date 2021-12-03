@@ -1,3 +1,5 @@
+pub mod diagnostic;
+
 use std::{
     fs::File,
     io::{self, prelude::*, BufReader},
