@@ -102,9 +102,9 @@ impl Submarine {
         reader.lines().collect()
     }
 
-    pub fn run(&mut self, input: &Vec<String>) {
+    pub fn run(&mut self, input: &[String]) {
         for inst in input {
-            let mut split = inst.split(" ");
+            let mut split = inst.split(' ');
             let dir = split.next().unwrap();
             let unit = split.next().unwrap().parse::<i32>().unwrap();
             match dir {

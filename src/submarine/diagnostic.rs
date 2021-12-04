@@ -1,3 +1,4 @@
+use std::cmp::Ordering;
 use std::fs::File;
 use std::io::{self, prelude::*, BufReader};
 
@@ -65,7 +66,7 @@ impl DiagnosticModule {
         (gamma, epsilon)
     }
 
-    fn most_common(&self, reading: &Vec<&Vec<u8>>, i: usize) -> Option<u8> {
+    fn most_common(&self, reading: &[&Vec<u8>], i: usize) -> Option<u8> {
         let mut ones = 0;
         let mut zeros = 0;
         for line in reading {
@@ -75,12 +76,10 @@ impl DiagnosticModule {
                 zeros += 1;
             }
         }
-        if ones > zeros {
-            Some(b'1')
-        } else if ones < zeros {
-            Some(b'0')
-        } else {
-            None
+        match ones.cmp(&zeros) {
+            Ordering::Greater => Some(b'1'),
+            Ordering::Less => Some(b'0'),
+            Ordering::Equal => None,
         }
     }
 

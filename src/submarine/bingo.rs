@@ -22,7 +22,7 @@ impl BingoSystem {
         reader.read_line(&mut buf)?;
         let seq = buf
             .trim_end()
-            .split(",")
+            .split(',')
             .map(|s| s.parse().unwrap())
             .collect::<Vec<i32>>();
 
@@ -41,7 +41,7 @@ impl BingoSystem {
                 reader.read_line(&mut buf)?;
                 numbers.extend(
                     buf.trim()
-                        .split(" ")
+                        .split(' ')
                         .filter(|s| !s.is_empty())
                         .map(|s| s.parse::<i32>().unwrap()),
                 )
@@ -118,7 +118,7 @@ impl FiveByFiveBoard {
         for r in 0..5 {
             let mut win = true;
             for col in 0..5 {
-                if self.markers[r * 5 + col] == false {
+                if !self.markers[r * 5 + col] {
                     win = false;
                     break;
                 }
@@ -131,7 +131,7 @@ impl FiveByFiveBoard {
         for col in 0..5 {
             let mut win = true;
             for r in 0..5 {
-                if self.markers[r * 5 + col] == false {
+                if !self.markers[r * 5 + col] {
                     win = false;
                     break;
                 }
