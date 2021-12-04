@@ -1,3 +1,4 @@
+pub mod bingo;
 pub mod diagnostic;
 
 use std::{

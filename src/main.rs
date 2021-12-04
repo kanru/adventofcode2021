@@ -3,7 +3,7 @@ mod submarine;
 
 use sonar::Sonar;
 use std::io;
-use submarine::{diagnostic::DiagnosticModule, Submarine};
+use submarine::{bingo::BingoSystem, diagnostic::DiagnosticModule, Submarine};
 
 fn main() -> io::Result<()> {
     let input = "data/day01.txt";
@@ -23,6 +23,11 @@ fn main() -> io::Result<()> {
     let input = "data/day03.txt";
     let diagnostic_module = DiagnosticModule::from_file(&input)?;
     println!("Day 3, part 1 => {:?}", diagnostic_module.generate_report());
+
+    let input = "data/day04.txt";
+    let bingo_system = BingoSystem::from_file(&input)?;
+    println!("Day 4, part 1 => {}", bingo_system.bingo_to_win());
+    println!("Day 4, part 2 => {}", bingo_system.bingo_to_lose());
 
     Ok(())
 }
