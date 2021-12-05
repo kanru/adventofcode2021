@@ -128,28 +128,24 @@ mod tests {
     #[test]
     fn test_day2_part1() {
         let mut submarine = Submarine::v1();
-        submarine.run(&vec![
-            "forward 5".to_string(),
+        submarine.run(&["forward 5".to_string(),
             "down 5".to_string(),
             "forward 8".to_string(),
             "up 3".to_string(),
             "down 8".to_string(),
-            "forward 2".to_string(),
-        ]);
+            "forward 2".to_string()]);
         assert_eq!(150, submarine.report());
     }
 
     #[test]
     fn test_day2_part2() {
         let mut submarine = Submarine::v2();
-        submarine.run(&vec![
-            "forward 5".to_string(),
+        submarine.run(&["forward 5".to_string(),
             "down 5".to_string(),
             "forward 8".to_string(),
             "up 3".to_string(),
             "down 8".to_string(),
-            "forward 2".to_string(),
-        ]);
+            "forward 2".to_string()]);
         assert_eq!(900, submarine.report());
     }
 }
