@@ -29,5 +29,16 @@ fn main() -> io::Result<()> {
     println!("Day 4, part 1 => {}", bingo_system.bingo_to_win());
     println!("Day 4, part 2 => {}", bingo_system.bingo_to_lose());
 
+    let input = "data/day05.txt";
+    let vent_lines = Sonar::scan_hydrothermal_vents_file(&input)?;
+    println!(
+        "Day 5, part 1 => {}",
+        Sonar::simple_count_hydrothermal_active_vents(&vent_lines)
+    );
+    println!(
+        "Day 5, part 2 => {}",
+        Sonar::full_count_hydrothermal_active_vents(&vent_lines)
+    );
+
     Ok(())
 }
