@@ -5,6 +5,8 @@ use sonar::Sonar;
 use std::io;
 use submarine::{bingo::BingoSystem, diagnostic::DiagnosticModule, Submarine};
 
+use crate::submarine::lanternfish::LanternFishSim;
+
 fn main() -> io::Result<()> {
     let input = "data/day01.txt";
     let reading = Sonar::sweep(input)?;
@@ -39,6 +41,11 @@ fn main() -> io::Result<()> {
         "Day 5, part 2 => {}",
         Sonar::full_count_hydrothermal_active_vents(&vent_lines)
     );
+
+    let input = "data/day06.txt";
+    let sim = LanternFishSim::init_pool_from_file(input)?;
+    println!("Day 6, part 1 => {}", sim.run(80));
+    println!("Day 6, part 1 => {}", sim.run(256));
 
     Ok(())
 }
