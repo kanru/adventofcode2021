@@ -1,3 +1,4 @@
+mod quest;
 mod sonar;
 mod submarine;
 
@@ -5,7 +6,7 @@ use sonar::Sonar;
 use std::io;
 use submarine::{bingo::BingoSystem, diagnostic::DiagnosticModule, Submarine};
 
-use crate::submarine::lanternfish::LanternFishSim;
+use crate::{quest::align_crabs::CrabSwarm, submarine::lanternfish::LanternFishSim};
 
 fn main() -> io::Result<()> {
     let input = "data/day01.txt";
@@ -46,6 +47,14 @@ fn main() -> io::Result<()> {
     let sim = LanternFishSim::init_pool_from_file(input)?;
     println!("Day 6, part 1 => {}", sim.run(80));
     println!("Day 6, part 1 => {}", sim.run(256));
+
+    let input = "data/day07.txt";
+    let crab_swarm = CrabSwarm::init_from_file(input)?;
+    println!("Day 7, part 1 => {}", crab_swarm.best_alignment());
+    println!(
+        "Day 7, part 2 => {}",
+        crab_swarm.best_alignment_for_crab_engine()
+    );
 
     Ok(())
 }
