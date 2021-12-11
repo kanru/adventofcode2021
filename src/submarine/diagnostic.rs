@@ -13,10 +13,6 @@ pub struct DiagnosticReport {
 }
 
 impl DiagnosticModule {
-    pub fn new() -> DiagnosticModule {
-        DiagnosticModule { reading: vec![] }
-    }
-
     pub fn from_file(input: &str) -> io::Result<DiagnosticModule> {
         let file = File::open(input)?;
         let reader = BufReader::new(file);
@@ -27,10 +23,6 @@ impl DiagnosticModule {
                 .map(|line| line.unwrap().into_bytes())
                 .collect(),
         })
-    }
-
-    pub fn take_reading(&mut self, reading: Vec<Vec<u8>>) {
-        self.reading = reading;
     }
 
     pub fn generate_report(&self) -> DiagnosticReport {
@@ -143,21 +135,25 @@ mod tests {
 
     #[test]
     fn test_day3() {
-        let mut diagnostic = DiagnosticModule::new();
-        diagnostic.take_reading(vec![
-            b"00100".to_vec(),
-            b"11110".to_vec(),
-            b"10110".to_vec(),
-            b"10111".to_vec(),
-            b"10101".to_vec(),
-            b"01111".to_vec(),
-            b"00111".to_vec(),
-            b"11100".to_vec(),
-            b"10000".to_vec(),
-            b"11001".to_vec(),
-            b"00010".to_vec(),
-            b"01010".to_vec(),
-        ]);
+        let mut diagnostic = DiagnosticModule { reading: vec![] };
+        {
+            let ref mut this = diagnostic;
+            let reading = vec![
+                b"00100".to_vec(),
+                b"11110".to_vec(),
+                b"10110".to_vec(),
+                b"10111".to_vec(),
+                b"10101".to_vec(),
+                b"01111".to_vec(),
+                b"00111".to_vec(),
+                b"11100".to_vec(),
+                b"10000".to_vec(),
+                b"11001".to_vec(),
+                b"00010".to_vec(),
+                b"01010".to_vec(),
+            ];
+            this.reading = reading;
+        };
         assert_eq!(
             DiagnosticReport {
                 power_consumption: 198,
