@@ -6,7 +6,10 @@ use sonar::Sonar;
 use std::io;
 use submarine::{bingo::BingoSystem, diagnostic::DiagnosticModule, Submarine};
 
-use crate::{quest::align_crabs::CrabSwarm, submarine::lanternfish::LanternFishSim};
+use crate::{
+    quest::{align_crabs::CrabSwarm, seven_segments::SevenSegments},
+    submarine::lanternfish::LanternFishSim,
+};
 
 fn main() -> io::Result<()> {
     let input = "data/day01.txt";
@@ -55,6 +58,11 @@ fn main() -> io::Result<()> {
         "Day 7, part 2 => {}",
         crab_swarm.best_alignment_for_crab_engine()
     );
+
+    let input = "data/day08.txt";
+    let input = SevenSegments::input_from_file(input)?;
+    println!("Day 8, part 1 => {}", SevenSegments::count_1478(&input));
+    println!("Day 8, part 2 => {}", SevenSegments::decode_display(&input));
 
     Ok(())
 }
