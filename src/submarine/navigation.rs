@@ -24,7 +24,7 @@ impl NavigationSystem {
     pub fn calculate_syntax_error_score(&self) -> usize {
         let mut score = 0;
         for line in &self.memory {
-            if let Some(illegal_char) = first_syntax_error(&line) {
+            if let Some(illegal_char) = first_syntax_error(line) {
                 score += illegal_char_score(illegal_char);
             }
         }
@@ -34,7 +34,7 @@ impl NavigationSystem {
     pub fn calculate_autocomplete_score(&self) -> usize {
         let mut scores = vec![];
         for line in &self.memory {
-            if let Some(tail) = autocomplete_syntax(&line) {
+            if let Some(tail) = autocomplete_syntax(line) {
                 scores.push(autocomplete_score(&tail));
             }
         }

@@ -137,7 +137,7 @@ mod tests {
     fn test_day3() {
         let mut diagnostic = DiagnosticModule { reading: vec![] };
         {
-            let ref mut this = diagnostic;
+            let this = &mut diagnostic;
             let reading = vec![
                 b"00100".to_vec(),
                 b"11110".to_vec(),
