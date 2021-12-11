@@ -1,6 +1,6 @@
 use std::{
     cmp::Ordering,
-    collections::HashMap,
+    collections::{HashMap, HashSet, VecDeque},
     fs::File,
     io::{self, prelude::*, BufReader},
     vec,
@@ -19,6 +19,67 @@ impl Sonar {
             .lines()
             .map(|line| line.unwrap().parse().unwrap())
             .collect())
+    }
+
+    pub fn heightmap_from_file(path: &str) -> io::Result<HeightMap> {
+        let mut file = File::open(path)?;
+        let mut buf = String::new();
+        file.read_to_string(&mut buf)?;
+        Sonar::heightmap_from_str(&buf)
+    }
+
+    fn heightmap_from_str(input: &str) -> io::Result<HeightMap> {
+        let stride = input.find('\n').unwrap();
+        let buf: Vec<_> = input
+            .chars()
+            .filter(|&c| c.is_numeric())
+            .map(|c| c.to_digit(10).unwrap() as u8)
+            .collect();
+        let rows = buf.len() / stride;
+        Ok(HeightMap { stride, buf, rows })
+    }
+
+    pub fn measure_risk_level(height_map: &HeightMap) -> usize {
+        let mut risk_level = 0;
+        for x in 0..height_map.stride {
+            for y in 0..height_map.rows {
+                let (center, neighbors) = height_map.probe(x, y);
+                if neighbors.iter().all(|&h| h.value > center) {
+                    risk_level += center as usize + 1;
+                }
+            }
+        }
+        risk_level
+    }
+
+    pub fn measure_largest_basin(height_map: &HeightMap) -> usize {
+        let mut seen = HashSet::new();
+        let mut basin_sizes = Vec::new();
+        for x in 0..height_map.stride {
+            for y in 0..height_map.rows {
+                let (center, neighbors) = height_map.probe(x, y);
+                if neighbors.iter().all(|&h| h.value > center) {
+                    let mut basin_size = 0;
+                    let mut queue = VecDeque::new();
+                    queue.push_back((x, y));
+                    seen.insert((x, y));
+                    while !queue.is_empty() {
+                        let (x, y) = queue.pop_front().unwrap();
+                        basin_size += 1;
+                        let (_, neighbors) = height_map.probe(x, y);
+                        for point in &neighbors {
+                            if !seen.contains(&point.coord) && point.value < 9 {
+                                seen.insert(point.coord);
+                                queue.push_back(point.coord);
+                            }
+                        }
+                    }
+                    basin_sizes.push(basin_size);
+                }
+            }
+        }
+        basin_sizes.sort_unstable();
+        basin_sizes.iter().rev().take(3).product()
     }
 
     pub fn measure_width(reading: &[i32], window: usize) -> usize {
@@ -109,6 +170,51 @@ pub struct VentLine {
     y2: i32,
 }
 
+pub struct HeightMap {
+    buf: Vec<u8>,
+    stride: usize,
+    rows: usize,
+}
+
+#[derive(Clone, Copy)]
+struct Point {
+    value: u8,
+    coord: (usize, usize),
+}
+
+impl HeightMap {
+    fn probe(&self, x: usize, y: usize) -> (u8, Vec<Point>) {
+        let mut neighbors = Vec::new();
+        let point = x + y * self.stride;
+        let center = self.buf[point];
+        if x > 0 {
+            neighbors.push(Point {
+                value: self.buf[point - 1],
+                coord: (x - 1, y),
+            });
+        }
+        if x < self.stride - 1 {
+            neighbors.push(Point {
+                value: self.buf[point + 1],
+                coord: (x + 1, y),
+            });
+        }
+        if y > 0 {
+            neighbors.push(Point {
+                value: self.buf[point - self.stride],
+                coord: (x, y - 1),
+            })
+        }
+        if y < self.rows - 1 {
+            neighbors.push(Point {
+                value: self.buf[point + self.stride],
+                coord: (x, y + 1),
+            });
+        }
+        (center, neighbors)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::{Sonar, VentLine};
@@ -171,5 +277,31 @@ mod tests {
         )
         .unwrap();
         assert_eq!(12, Sonar::full_count_hydrothermal_active_vents(&vent_lines));
+    }
+
+    #[test]
+    fn test_day9_part1() {
+        let height_map = Sonar::heightmap_from_str(
+            "2199943210
+            3987894921
+            9856789892
+            8767896789
+            9899965678",
+        )
+        .expect("parse error");
+        assert_eq!(15, Sonar::measure_risk_level(&height_map));
+    }
+
+    #[test]
+    fn test_day9_part2() {
+        let height_map = Sonar::heightmap_from_str(
+            "2199943210
+            3987894921
+            9856789892
+            8767896789
+            9899965678",
+        )
+        .expect("parse error");
+        assert_eq!(1134, Sonar::measure_largest_basin(&height_map));
     }
 }

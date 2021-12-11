@@ -64,5 +64,16 @@ fn main() -> io::Result<()> {
     println!("Day 8, part 1 => {}", SevenSegments::count_1478(&input));
     println!("Day 8, part 2 => {}", SevenSegments::decode_display(&input));
 
+    let input = "data/day09.txt";
+    let height_map = Sonar::heightmap_from_file(input)?;
+    println!(
+        "Day 9, part 1 => {}",
+        Sonar::measure_risk_level(&height_map)
+    );
+    println!(
+        "Day 9, part 2 => {}",
+        Sonar::measure_largest_basin(&height_map)
+    );
+
     Ok(())
 }
