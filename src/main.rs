@@ -8,7 +8,7 @@ use submarine::{bingo::BingoSystem, diagnostic::DiagnosticModule, Submarine};
 
 use crate::{
     quest::{align_crabs::CrabSwarm, seven_segments::SevenSegments},
-    submarine::lanternfish::LanternFishSim,
+    submarine::{lanternfish::LanternFishSim, navigation::NavigationSystem},
 };
 
 fn main() -> io::Result<()> {
@@ -73,6 +73,17 @@ fn main() -> io::Result<()> {
     println!(
         "Day 9, part 2 => {}",
         Sonar::measure_largest_basin(&height_map)
+    );
+
+    let input = "data/day10.txt";
+    let nav_system = NavigationSystem::boot_from_file(input)?;
+    println!(
+        "Day 10, part 1 => {}",
+        nav_system.calculate_syntax_error_score()
+    );
+    println!(
+        "Day 10, part 2 => {}",
+        nav_system.calculate_autocomplete_score()
     );
 
     Ok(())

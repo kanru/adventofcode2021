@@ -1,6 +1,7 @@
 pub mod bingo;
 pub mod diagnostic;
 pub mod lanternfish;
+pub mod navigation;
 
 use std::{
     fs::File,
