@@ -8,7 +8,9 @@ use submarine::{bingo::BingoSystem, diagnostic::DiagnosticModule, Submarine};
 
 use crate::{
     quest::{align_crabs::CrabSwarm, seven_segments::SevenSegments},
-    submarine::{lanternfish::LanternFishSim, navigation::NavigationSystem},
+    submarine::{
+        computer::packet::Packet, lanternfish::LanternFishSim, navigation::NavigationSystem,
+    },
 };
 
 fn main() -> io::Result<()> {
@@ -85,6 +87,12 @@ fn main() -> io::Result<()> {
         "Day 10, part 2 => {}",
         nav_system.calculate_autocomplete_score()
     );
+
+    let input = include_str!("../data/day16.txt");
+    let packet = Packet::from_hex(input);
+    // packet.dot();
+    println!("Day 16, part 1 => {}", packet.version_sum());
+    println!("Day 16, part 2 => {}", packet.eval());
 
     Ok(())
 }
