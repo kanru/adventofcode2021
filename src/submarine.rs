@@ -3,6 +3,7 @@ pub mod computer;
 pub mod diagnostic;
 pub mod lanternfish;
 pub mod navigation;
+pub mod octopus;
 
 use std::{
     fs::File,

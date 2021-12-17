@@ -10,6 +10,7 @@ use crate::{
     quest::{align_crabs::CrabSwarm, seven_segments::SevenSegments},
     submarine::{
         computer::packet::Packet, lanternfish::LanternFishSim, navigation::NavigationSystem,
+        octopus::OctopusSim,
     },
 };
 
@@ -87,6 +88,12 @@ fn main() -> io::Result<()> {
         "Day 10, part 2 => {}",
         nav_system.calculate_autocomplete_score()
     );
+
+    let input = "data/day11.txt";
+    let sim = OctopusSim::init_from_file(input)?;
+    println!("Day 11, part 1 => {}", sim.run(100));
+    let sim = OctopusSim::init_from_file(input)?;
+    println!("Day 11, part 2 => {}", sim.run_til_sync());
 
     let input = include_str!("../data/day16.txt");
     let packet = Packet::from_hex(input);
