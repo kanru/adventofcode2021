@@ -239,7 +239,7 @@ mod tests {
         let input = [0b11000000];
         assert_eq!(
             type_id((&input, 0)),
-            Ok((([0b11000000].as_ref(), 3), TypeId::Other(6)))
+            Ok((([0b11000000].as_ref(), 3), TypeId::LessOp))
         );
     }
 
@@ -301,7 +301,7 @@ mod tests {
         assert_eq!(
             Packet {
                 version: 1,
-                type_id: TypeId::Other(6),
+                type_id: TypeId::LessOp,
                 value: None,
                 sub_packets: vec![
                     Packet {
@@ -326,7 +326,7 @@ mod tests {
         assert_eq!(
             Packet {
                 version: 7,
-                type_id: TypeId::Other(3),
+                type_id: TypeId::MaxOp,
                 value: None,
                 sub_packets: vec![
                     Packet {
